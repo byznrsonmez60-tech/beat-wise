@@ -62,7 +62,7 @@ const Dashboard = () => {
         <CardContent>
           <div className="space-y-4">
             {weeklyData.map((rate, index) => {
-              const days = ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"];
+              const days = ["Pzt", "Salı", "Çar", "Per", "Cum", "Cmt", "Paz"];
               const progress = ((rate - 50) / 50) * 100;
               return (
                 <div key={index} className="space-y-1">
