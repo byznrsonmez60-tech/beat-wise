@@ -2,66 +2,68 @@ import { AlertTriangle, Pill, Info } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Medications = () => {
+  const { t } = useLanguage();
+
   const contraindicatedMeds = [
     {
-      name: "Makrolid Antibiyotikler",
+      nameKey: "macrolideAntibiotics",
       examples: ["Eritromisin", "Azitromisin", "Klaritromisin"],
-      risk: "Yüksek",
-      reason: "QT aralığını uzatabilir",
+      riskKey: "high",
+      reasonKey: "mayExtendQt",
     },
     {
-      name: "Antiaritmik İlaçlar",
+      nameKey: "antiarrhythmicDrugs",
       examples: ["Amiodaron", "Sotalol", "Dofetilid"],
-      risk: "Yüksek",
-      reason: "Kalp ritmi üzerinde direkt etki",
+      riskKey: "high",
+      reasonKey: "directHeartEffect",
     },
     {
-      name: "Antipsikotik İlaçlar",
+      nameKey: "antipsychoticDrugs",
       examples: ["Haloperidol", "Klorpromazin", "Ketiapin"],
-      risk: "Orta-Yüksek",
-      reason: "QT uzaması riski",
+      riskKey: "mediumHigh",
+      reasonKey: "qtExtensionRisk",
     },
     {
-      name: "Bazı Antidepresanlar",
+      nameKey: "someAntidepressants",
       examples: ["Sitalopram", "Essitalopram"],
-      risk: "Orta",
-      reason: "Yüksek dozlarda QT uzaması",
+      riskKey: "medium",
+      reasonKey: "highDoseQtExtension",
     },
     {
-      name: "Antihistaminikler",
+      nameKey: "antihistamines",
       examples: ["Terfenadin", "Astemizol"],
-      risk: "Yüksek",
-      reason: "Kardiyak yan etkiler",
+      riskKey: "high",
+      reasonKey: "cardiacSideEffects",
     },
     {
-      name: "Antimalaryal İlaçlar",
+      nameKey: "antimalarialDrugs",
       examples: ["Kinin", "Klorokin", "Hidroksiklorokin"],
-      risk: "Orta-Yüksek",
-      reason: "QT aralığı etkileri",
+      riskKey: "mediumHigh",
+      reasonKey: "qtIntervalEffects",
     },
   ];
 
-  const getRiskColor = (risk: string) => {
-    if (risk.includes("Yüksek")) return "destructive";
-    if (risk.includes("Orta")) return "default";
+  const getRiskColor = (riskKey: string) => {
+    if (riskKey === "high") return "destructive";
+    if (riskKey === "mediumHigh" || riskKey === "medium") return "default";
     return "secondary";
   };
 
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="text-center space-y-2 mb-6">
-        <h1 className="text-3xl font-bold text-foreground">İlaç Uyarıları</h1>
-        <p className="text-muted-foreground">Kullanımı riskli ilaçlar</p>
+        <h1 className="text-3xl font-bold text-foreground">{t("medicationsTitle")}</h1>
+        <p className="text-muted-foreground">{t("medicationsSubtitle")}</p>
       </div>
 
       <Alert className="border-accent bg-accent/5">
         <AlertTriangle className="h-5 w-5 text-accent" />
-        <AlertTitle className="text-accent font-semibold">Önemli Uyarı</AlertTitle>
+        <AlertTitle className="text-accent font-semibold">{t("importantWarning")}</AlertTitle>
         <AlertDescription className="text-foreground">
-          Aşağıdaki ilaçlar kalp ritmi bozukluğu olan hastalar için riskli olabilir. 
-          Herhangi bir ilaç kullanmadan önce mutlaka doktorunuza danışın.
+          {t("medicationWarningDesc")}
         </AlertDescription>
       </Alert>
 
@@ -73,7 +75,7 @@ const Medications = () => {
                 <div className="flex items-start gap-3 flex-1">
                   <Pill className="w-5 h-5 text-accent mt-1 flex-shrink-0" />
                   <div className="flex-1">
-                    <CardTitle className="text-lg mb-2">{med.name}</CardTitle>
+                    <CardTitle className="text-lg mb-2">{t(med.nameKey)}</CardTitle>
                     <div className="flex flex-wrap gap-2">
                       {med.examples.map((example, i) => (
                         <Badge key={i} variant="outline" className="text-xs">
@@ -83,8 +85,8 @@ const Medications = () => {
                     </div>
                   </div>
                 </div>
-                <Badge variant={getRiskColor(med.risk)} className="flex-shrink-0">
-                  {med.risk}
+                <Badge variant={getRiskColor(med.riskKey)} className="flex-shrink-0">
+                  {t(med.riskKey)}
                 </Badge>
               </div>
             </CardHeader>
@@ -93,8 +95,8 @@ const Medications = () => {
                 <div className="flex items-start gap-2">
                   <Info className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
                   <p className="text-sm text-foreground">
-                    <span className="font-semibold">Sebep: </span>
-                    {med.reason}
+                    <span className="font-semibold">{t("reason")} </span>
+                    {t(med.reasonKey)}
                   </p>
                 </div>
               </div>
@@ -108,12 +110,12 @@ const Medications = () => {
           <div className="flex items-start gap-3">
             <Info className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
             <div className="space-y-2 text-sm">
-              <p className="font-semibold text-primary">Hatırlatma:</p>
+              <p className="font-semibold text-primary">{t("reminder")}</p>
               <ul className="space-y-1 text-foreground list-disc list-inside">
-                <li>Yeni bir ilaç başlamadan önce doktorunuza mutlaka bildirin</li>
-                <li>Reçetesiz ilaçlar bile risk oluşturabilir</li>
-                <li>Bu liste tüm riskli ilaçları içermeyebilir</li>
-                <li>İlaç etkileşimleri kişiye göre değişebilir</li>
+                <li>{t("reminderItem1")}</li>
+                <li>{t("reminderItem2")}</li>
+                <li>{t("reminderItem3")}</li>
+                <li>{t("reminderItem4")}</li>
               </ul>
             </div>
           </div>

@@ -1,20 +1,23 @@
 import { ReactNode } from "react";
 import { Heart, Activity, Calendar, Pill, Users, FileText, Home, Settings } from "lucide-react";
 import { NavLink } from "./NavLink";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 const Layout = ({ children }: LayoutProps) => {
+  const { t } = useLanguage();
+
   const navItems = [
-    { to: "/", icon: Home, label: "Ana Sayfa" },
-    { to: "/info", icon: Activity, label: "Bilgi Merkezi" },
-    { to: "/appointments", icon: Calendar, label: "Randevular" },
-    { to: "/medications", icon: Pill, label: "İlaçlar" },
-    { to: "/doctors", icon: Users, label: "Doktorlar" },
-    { to: "/ecg", icon: FileText, label: "EKG Geçmişi" },
-    { to: "/settings", icon: Settings, label: "Ayarlar" },
+    { to: "/", icon: Home, labelKey: "home" },
+    { to: "/info", icon: Activity, labelKey: "infoCenter" },
+    { to: "/appointments", icon: Calendar, labelKey: "appointments" },
+    { to: "/medications", icon: Pill, labelKey: "medications" },
+    { to: "/doctors", icon: Users, labelKey: "doctors" },
+    { to: "/ecg", icon: FileText, labelKey: "ecgHistory" },
+    { to: "/settings", icon: Settings, labelKey: "settings" },
   ];
 
   return (
@@ -29,9 +32,9 @@ const Layout = ({ children }: LayoutProps) => {
             </div>
             <div>
               <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                KalpTakip
+                {t("appName")}
               </h1>
-              <p className="text-xs text-muted-foreground">Kalp Ritmi Yönetim Sistemi</p>
+              <p className="text-xs text-muted-foreground">{t("appSubtitle")}</p>
             </div>
           </div>
         </div>
@@ -54,7 +57,7 @@ const Layout = ({ children }: LayoutProps) => {
                 activeClassName="bg-primary/10 text-primary"
               >
                 <item.icon className="w-5 h-5" />
-                <span className="text-xs font-medium">{item.label}</span>
+                <span className="text-xs font-medium">{t(item.labelKey)}</span>
               </NavLink>
             ))}
           </div>
