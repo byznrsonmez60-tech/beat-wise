@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Heart, Activity, Calendar, Pill, Users, FileText, Home } from "lucide-react";
+import { Heart, Activity, Calendar, Pill, Users, FileText, Home, Settings } from "lucide-react";
 import { NavLink } from "./NavLink";
 
 interface LayoutProps {
@@ -14,6 +14,7 @@ const Layout = ({ children }: LayoutProps) => {
     { to: "/medications", icon: Pill, label: "İlaçlar" },
     { to: "/doctors", icon: Users, label: "Doktorlar" },
     { to: "/ecg", icon: FileText, label: "EKG Geçmişi" },
+    { to: "/settings", icon: Settings, label: "Ayarlar" },
   ];
 
   return (
