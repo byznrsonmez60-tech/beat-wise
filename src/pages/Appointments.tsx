@@ -1,11 +1,13 @@
-import { Calendar, Clock, MapPin, Bell } from "lucide-react";
+import { Calendar, Clock, MapPin, Bell, Users } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useNavigate } from "react-router-dom";
 
 const Appointments = () => {
   const { t, language } = useLanguage();
+  const navigate = useNavigate();
 
   const appointments = [
     {
@@ -54,6 +56,16 @@ const Appointments = () => {
         <h1 className="text-3xl font-bold text-foreground">{t("appointmentsTitle")}</h1>
         <p className="text-muted-foreground">{t("appointmentsSubtitle")}</p>
       </div>
+
+      {/* Book New Appointment Button */}
+      <Button 
+        className="w-full" 
+        size="lg"
+        onClick={() => navigate("/doctors")}
+      >
+        <Users className="w-5 h-5 mr-2" />
+        {t("bookAppointment")}
+      </Button>
 
       {/* Upcoming Appointments */}
       <div className="space-y-4">
