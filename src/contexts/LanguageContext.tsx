@@ -129,6 +129,16 @@ const translations: Record<Language, Record<string, string>> = {
     invasiveElectrophysiology: "İnvaziv Elektrofizyoloji",
     heartRhythmDisorders: "Kalp Ritmi Bozuklukları",
     
+    // Booking
+    selectDateTime: "Tarih ve Saat Seçin",
+    selectDate: "Tarih Seçin",
+    selectTime: "Saat Seçin",
+    availableTimes: "Uygun Saatler",
+    confirmBooking: "Randevuyu Onayla",
+    cancel: "İptal",
+    bookingSuccess: "Randevu başarıyla oluşturuldu!",
+    appointmentWith: "Randevunuz:",
+    
     // ECG History
     ecgHistoryTitle: "EKG Geçmişi",
     ecgHistorySubtitle: "Elektrokardiyogram kayıtlarınız",
@@ -264,6 +274,16 @@ const translations: Record<Language, Record<string, string>> = {
     arrhythmiaPacemaker: "Arrhythmia and Pacemaker",
     invasiveElectrophysiology: "Invasive Electrophysiology",
     heartRhythmDisorders: "Heart Rhythm Disorders",
+    
+    // Booking
+    selectDateTime: "Select Date and Time",
+    selectDate: "Select Date",
+    selectTime: "Select Time",
+    availableTimes: "Available Times",
+    confirmBooking: "Confirm Booking",
+    cancel: "Cancel",
+    bookingSuccess: "Appointment booked successfully!",
+    appointmentWith: "Your appointment:",
     
     // ECG History
     ecgHistoryTitle: "ECG History",
