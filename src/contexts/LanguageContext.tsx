@@ -23,19 +23,20 @@ const translations: Record<Language, Record<string, string>> = {
     languageDescription: "Uygulama dilini seçin",
     appearance: "Görünüm",
     general: "Genel",
-    
+
     // Navigation
     home: "Ana Sayfa",
     infoCenter: "Bilgi Merkezi",
     appointments: "Randevular",
     medications: "İlaçlar",
     doctors: "Doktorlar",
+    doctorsAppointments: "Randevular",
     ecgHistory: "EKG Geçmişi",
-    
+
     // Header
     appName: "KalpTakip",
     appSubtitle: "Kalp Ritmi Yönetim Sistemi",
-    
+
     // Dashboard
     currentHeartRate: "Anlık Kalp Atışı",
     normalRange: "Normal aralıkta",
@@ -51,7 +52,7 @@ const translations: Record<Language, Record<string, string>> = {
     fri: "Cum",
     sat: "Cmt",
     sun: "Paz",
-    
+
     // Info Center
     infoCenterTitle: "Bilgi Merkezi",
     infoCenterSubtitle: "Kalp ritmi bozuklukları hakkında bilgiler",
@@ -78,7 +79,7 @@ const translations: Record<Language, Record<string, string>> = {
     avoidRiskyDrugs: "Riskli ilaçlardan kaçınma",
     icdImplant: "İmplante edilebilir defibrilatör (ICD) takılması",
     regularCheckup: "Düzenli doktor kontrolü ve EKG takibi",
-    
+
     // Appointments
     appointmentsTitle: "Randevular",
     appointmentsSubtitle: "Yaklaşan ve geçmiş randevularınız",
@@ -88,7 +89,7 @@ const translations: Record<Language, Record<string, string>> = {
     completed: "Tamamlandı",
     setReminder: "Hatırlatıcı Ayarla",
     cardiology: "Kardiyoloji",
-    
+
     // Medications
     medicationsTitle: "İlaç Uyarıları",
     medicationsSubtitle: "Kullanımı riskli ilaçlar",
@@ -115,7 +116,7 @@ const translations: Record<Language, Record<string, string>> = {
     highDoseQtExtension: "Yüksek dozlarda QT uzaması",
     cardiacSideEffects: "Kardiyak yan etkiler",
     qtIntervalEffects: "QT aralığı etkileri",
-    
+
     // Doctors
     doctorsTitle: "Kardiyoloji Uzmanları",
     doctorsSubtitle: "Kalp ritmi bozuklukları konusunda uzman doktorlar",
@@ -128,7 +129,7 @@ const translations: Record<Language, Record<string, string>> = {
     arrhythmiaPacemaker: "Aritmi ve Pacemaker",
     invasiveElectrophysiology: "İnvaziv Elektrofizyoloji",
     heartRhythmDisorders: "Kalp Ritmi Bozuklukları",
-    
+
     // ECG History
     ecgHistoryTitle: "EKG Geçmişi",
     ecgHistorySubtitle: "Elektrokardiyogram kayıtlarınız",
@@ -159,19 +160,20 @@ const translations: Record<Language, Record<string, string>> = {
     languageDescription: "Select application language",
     appearance: "Appearance",
     general: "General",
-    
+
     // Navigation
     home: "Home",
     infoCenter: "Info Center",
     appointments: "Appointments",
     medications: "Medications",
     doctors: "Doctors",
+    doctorsAppointments: "Doctors & Appointments",
     ecgHistory: "ECG History",
-    
+
     // Header
     appName: "HeartTrack",
     appSubtitle: "Heart Rhythm Management System",
-    
+
     // Dashboard
     currentHeartRate: "Current Heart Rate",
     normalRange: "Within normal range",
@@ -187,7 +189,7 @@ const translations: Record<Language, Record<string, string>> = {
     fri: "Fri",
     sat: "Sat",
     sun: "Sun",
-    
+
     // Info Center
     infoCenterTitle: "Info Center",
     infoCenterSubtitle: "Information about heart rhythm disorders",
@@ -214,7 +216,7 @@ const translations: Record<Language, Record<string, string>> = {
     avoidRiskyDrugs: "Avoiding risky medications",
     icdImplant: "Implantable cardioverter-defibrillator (ICD) implantation",
     regularCheckup: "Regular doctor check-ups and ECG monitoring",
-    
+
     // Appointments
     appointmentsTitle: "Appointments",
     appointmentsSubtitle: "Your upcoming and past appointments",
@@ -224,7 +226,7 @@ const translations: Record<Language, Record<string, string>> = {
     completed: "Completed",
     setReminder: "Set Reminder",
     cardiology: "Cardiology",
-    
+
     // Medications
     medicationsTitle: "Medication Warnings",
     medicationsSubtitle: "Risky medications",
@@ -251,7 +253,7 @@ const translations: Record<Language, Record<string, string>> = {
     highDoseQtExtension: "QT extension at high doses",
     cardiacSideEffects: "Cardiac side effects",
     qtIntervalEffects: "QT interval effects",
-    
+
     // Doctors
     doctorsTitle: "Cardiology Specialists",
     doctorsSubtitle: "Expert doctors in heart rhythm disorders",
@@ -264,7 +266,7 @@ const translations: Record<Language, Record<string, string>> = {
     arrhythmiaPacemaker: "Arrhythmia and Pacemaker",
     invasiveElectrophysiology: "Invasive Electrophysiology",
     heartRhythmDisorders: "Heart Rhythm Disorders",
-    
+
     // ECG History
     ecgHistoryTitle: "ECG History",
     ecgHistorySubtitle: "Your electrocardiogram records",

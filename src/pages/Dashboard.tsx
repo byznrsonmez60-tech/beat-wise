@@ -1,10 +1,12 @@
-import { Heart, TrendingUp, Activity } from "lucide-react";
+import { Heart, TrendingUp, Activity, Settings } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const currentHeartRate = 72;
   const dailyAverage = 68;
   const weeklyData = [65, 70, 68, 72, 69, 71, 68];
@@ -13,6 +15,17 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6 animate-fade-in">
+      {/* Settings Button - Top Right */}
+      <div className="flex justify-end">
+        <button
+          onClick={() => navigate("/settings")}
+          className="flex items-center gap-2 px-4 py-2 bg-card hover:bg-secondary text-foreground rounded-lg shadow-md hover:shadow-lg transition-all border border-border"
+          aria-label={t("settings")}
+        >
+          <Settings className="w-5 h-5 text-primary" />
+          <span className="font-medium">{t("settings")}</span>
+        </button>
+      </div>
       {/* Hero Card - Current Heart Rate */}
       <Card className="border-none bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg">
         <CardContent className="p-6">

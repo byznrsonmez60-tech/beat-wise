@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Heart, Activity, Calendar, Users, FileText, Home, Settings } from "lucide-react";
+import { Heart, Activity, Users, FileText, Home } from "lucide-react";
 import { NavLink } from "./NavLink";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -13,10 +13,8 @@ const Layout = ({ children }: LayoutProps) => {
   const navItems = [
     { to: "/", icon: Home, labelKey: "home" },
     { to: "/info", icon: Activity, labelKey: "infoCenter" },
-    { to: "/appointments", icon: Calendar, labelKey: "appointments" },
-    { to: "/doctors", icon: Users, labelKey: "doctors" },
+    { to: "/doctors-appointments", icon: Users, labelKey: "doctorsAppointments" },
     { to: "/ecg", icon: FileText, labelKey: "ecgHistory" },
-    { to: "/settings", icon: Settings, labelKey: "settings" },
   ];
 
   return (
