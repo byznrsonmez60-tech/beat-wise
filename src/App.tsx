@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import InfoCenter from "./pages/InfoCenter";
+import MedicationReminders from "./pages/MedicationReminders";
 import DoctorsAppointments from "./pages/DoctorsAppointments";
 import EcgHistory from "./pages/EcgHistory";
 import Settings from "./pages/Settings";
