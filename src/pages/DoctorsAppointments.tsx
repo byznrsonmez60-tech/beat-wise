@@ -9,7 +9,9 @@ import { requestNotificationPermission, scheduleAppointmentReminder } from "@/li
 
 const DoctorsAppointments = () => {
     const { t, language } = useLanguage();
+    const { toast } = useToast();
     const [activeTab, setActiveTab] = useState<"doctors" | "appointments">("doctors");
+    const [remindersSet, setRemindersSet] = useState<Set<number>>(new Set());
 
     const doctors = [
         {
