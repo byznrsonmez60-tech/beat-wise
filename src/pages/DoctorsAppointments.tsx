@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Users, MapPin, Phone, Calendar, Star, Clock, Bell } from "lucide-react";
+import { Users, MapPin, Phone, Calendar, Star, Clock, Bell, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useToast } from "@/hooks/use-toast";
+import { requestNotificationPermission, scheduleAppointmentReminder } from "@/lib/notifications";
 
 const DoctorsAppointments = () => {
     const { t, language } = useLanguage();
