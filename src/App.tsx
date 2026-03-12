@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,10 +14,19 @@ import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
+import { checkAndFireReminders } from "./lib/notifications";
 
 const queryClient = new QueryClient();
 
-const App = () => (
+const App = () => {
+  // Check for due reminders every 30 seconds
+  useEffect(() => {
+    const interval = setInterval(checkAndFireReminders, 30000);
+    checkAndFireReminders(); // Check immediately on load
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
       <LanguageProvider>
