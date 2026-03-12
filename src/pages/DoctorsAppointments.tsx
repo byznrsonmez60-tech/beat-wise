@@ -247,9 +247,36 @@ const DoctorsAppointments = () => {
                                         <MapPin className="w-4 h-4 text-primary" />
                                         <span className="text-foreground">{appointment.location}</span>
                                     </div>
-                                    <Button className="w-full mt-2" variant="outline">
-                                        <Bell className="w-4 h-4 mr-2" />
-                                        {t("setReminder")}
+                                    <Button
+                                        className="w-full mt-2"
+                                        variant={remindersSet.has(appointment.id) ? "secondary" : "outline"}
+                                        onClick={async () => {
+                                            const granted = await requestNotificationPermission();
+                                            if (!granted) {
+                                                toast({ title: t("notificationsDenied"), variant: "destructive" });
+                                                return;
+                                            }
+                                            const dateTime = new Date(`${appointment.date}T${appointment.time}`);
+                                            scheduleAppointmentReminder(
+                                                String(appointment.id),
+                                                appointment.doctor,
+                                                dateTime,
+                                                30,
+                                                language
+                                            );
+                                            setRemindersSet(prev => new Set([...prev, appointment.id]));
+                                            toast({
+                                                title: t("reminderSet"),
+                                                description: `30 ${t("reminderSetDesc")}`,
+                                            });
+                                        }}
+                                    >
+                                        {remindersSet.has(appointment.id) ? (
+                                            <Check className="w-4 h-4 mr-2" />
+                                        ) : (
+                                            <Bell className="w-4 h-4 mr-2" />
+                                        )}
+                                        {remindersSet.has(appointment.id) ? t("reminderSet") : t("setReminder")}
                                     </Button>
                                 </CardContent>
                             </Card>
