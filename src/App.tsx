@@ -49,6 +49,7 @@ const App = () => {
       </LanguageProvider>
     </ThemeProvider>
   </QueryClientProvider>
-);
+  );
+};
 
 export default App;
