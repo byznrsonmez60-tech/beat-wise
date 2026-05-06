@@ -40,6 +40,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Dashboard
     currentHeartRate: "Anlık Kalp Atışı",
     normalRange: "Normal aralıkta",
+    abnormalRange: "Normal aralığın dışında!",
     dailyAverage: "Günlük Ortalama",
     target: "Hedef",
     weeklyTrend: "Haftalık Trend",
@@ -52,10 +53,19 @@ const translations: Record<Language, Record<string, string>> = {
     fri: "Cum",
     sat: "Cmt",
     sun: "Paz",
+    welcome: "Hoş geldiniz",
+
+    // Heart Rate Anomaly
+    heartRateAnomaly: "Kalp Atış Hızı Anomalisi",
+    heartRateAnomalyDesc: "Kalp atış hızınız normal değerlerin (60-100 bpm) dışına çıktı. Lütfen dikkatli olun.",
+    familyNotified: "Aile üyesine bildirim gönderildi",
+    notifiedAt: "Bildirim gönderildi:",
 
     // Info Center
     infoCenterTitle: "Bilgi Merkezi",
     infoCenterSubtitle: "Kalp ritmi bozuklukları hakkında bilgiler",
+    generalInfo: "Genel Bilgi",
+    generalInfoShort: "Genel",
     whatIsArrhythmia: "Kalp Ritmi Bozukluğu Nedir?",
     arrhythmiaDesc: "Kalp ritmi bozukluğu (aritmi), kalbinizin çok hızlı, çok yavaş veya düzensiz atmasıdır. Kalp normalde dakikada 60-100 arası atar. Bu aralığın dışındaki atışlar veya düzensiz atışlar aritmi olarak değerlendirilir.",
     importantNote: "Önemli Not:",
@@ -90,11 +100,15 @@ const translations: Record<Language, Record<string, string>> = {
     setReminder: "Hatırlatıcı Ayarla",
     cardiology: "Kardiyoloji",
 
-    // Medications
+    // Medications - Contraindicated Drugs
     medicationsTitle: "İlaç Uyarıları",
     medicationsSubtitle: "Kullanımı riskli ilaçlar",
     importantWarning: "Önemli Uyarı",
     medicationWarningDesc: "Aşağıdaki ilaçlar kalp ritmi bozukluğu olan hastalar için riskli olabilir. Herhangi bir ilaç kullanmadan önce mutlaka doktorunuza danışın.",
+    contraindicatedDrugs: "Riskli İlaçlar",
+    drugsShort: "İlaçlar",
+    contraindicatedDrugsTitle: "Kullanılmaması Gereken İlaçlar",
+    contraindicatedDrugsDesc: "Kalp ritim bozukluğu olan kişilerin aşağıdaki ilaç gruplarını kullanmaması veya doktor gözetiminde dikkatli kullanması gerekmektedir. Bu ilaçlar QT aralığını uzatabilir veya kalp ritmi üzerinde olumsuz etkiler yaratabilir.",
     high: "Yüksek",
     mediumHigh: "Orta-Yüksek",
     medium: "Orta",
@@ -116,6 +130,25 @@ const translations: Record<Language, Record<string, string>> = {
     highDoseQtExtension: "Yüksek dozlarda QT uzaması",
     cardiacSideEffects: "Kardiyak yan etkiler",
     qtIntervalEffects: "QT aralığı etkileri",
+
+    // Medication Reminders
+    medReminders: "İlaç Hatırlatma",
+    remindersShort: "Hatırlatma",
+    addMedReminder: "İlaç Hatırlatması Ekle",
+    medicationName: "İlaç Adı",
+    medNamePlaceholder: "örn: Metoprolol",
+    medicationTime: "İlaç Saati",
+    remindBefore: "Kaç Dakika Önce Hatırlat",
+    minutes: "dakika",
+    addReminder: "Hatırlatma Ekle",
+    activeReminders: "Aktif Hatırlatmalar",
+    noReminders: "Henüz hatırlatma eklenmemiş",
+    reminderAdded: "Hatırlatma eklendi!",
+    reminderRemoved: "Hatırlatma silindi",
+    minBefore: "dk önce",
+    medicationReminder: "İlaç Hatırlatması",
+    minutesBefore: "dakika sonra ilaç saati",
+    timeToTakeMed: "İlaç alma zamanı",
 
     // Doctors
     doctorsTitle: "Kardiyoloji Uzmanları",
@@ -173,9 +206,10 @@ const translations: Record<Language, Record<string, string>> = {
 
     // ECG History
     ecgHistoryTitle: "EKG Geçmişi",
-    ecgHistorySubtitle: "Elektrokardiyogram kayıtlarınız",
+    ecgHistorySubtitle: "EKG kayıtlarınızı PDF veya fotoğraf olarak yükleyin",
     totalEcg: "Toplam EKG",
     lastQt: "Son QT",
+    lastUpload: "Son Yükleme",
     ecgRecord: "EKG Kaydı",
     normal: "Normal",
     mildExtension: "Hafif Uzama",
@@ -186,6 +220,67 @@ const translations: Record<Language, Record<string, string>> = {
     doctor: "Doktor",
     notes: "Notlar:",
     downloadEcgReport: "EKG Raporunu İndir",
+    uploadEcg: "EKG Kaydı Yükle",
+    uploadEcgDesc: "PDF veya fotoğraf formatında EKG kayıtlarınızı yükleyin",
+    selectFile: "Dosya Seç",
+    fileUploaded: "Dosya başarıyla yüklendi!",
+    invalidFileType: "Geçersiz dosya türü. PDF veya resim dosyası seçin.",
+    fileTooLarge: "Dosya boyutu çok büyük (max 10MB)",
+    recordDeleted: "Kayıt silindi",
+    noEcgRecords: "Henüz EKG kaydı yüklenmemiş",
+    noRecords: "Kayıt yok",
+    imageFile: "Fotoğraf",
+
+    // Auth - Landing
+    createAccount: "Hesap Oluştur",
+    loginButton: "Giriş Yap",
+    aboutApp: "Uygulama Hakkında",
+    aboutAppDesc: "KalpTakip, kalp ritmi bozukluğu olan hastaların sağlık durumlarını takip etmelerine, ilaç hatırlatmaları almalarına ve EKG kayıtlarını yönetmelerine yardımcı olan kapsamlı bir mobil sağlık uygulamasıdır.",
+    aboutFeature1: "Kalp atışı takibi",
+    aboutFeature2: "Anomali bildirimleri",
+    aboutFeature3: "EKG kayıt yönetimi",
+    aboutFeature4: "İlaç hatırlatmaları",
+
+    // Auth - Register
+    personalInfo: "Kişisel Bilgiler",
+    firstName: "Ad",
+    firstNamePlaceholder: "Adınızı girin",
+    lastName: "Soyad",
+    lastNamePlaceholder: "Soyadınızı girin",
+    phoneNumber: "Telefon Numarası",
+    password: "Şifre",
+    passwordPlaceholder: "Minimum 8 karakter",
+    confirmPassword: "Şifre Doğrulama",
+    confirmPasswordPlaceholder: "Şifrenizi tekrar girin",
+    fieldRequired: "Bu alan zorunludur",
+    invalidPhone: "Geçerli bir telefon numarası girin",
+    passwordMinLength: "Şifre en az 8 karakter olmalıdır",
+    passwordMismatch: "Şifreler eşleşmiyor",
+    registerSuccess: "Hesap başarıyla oluşturuldu!",
+    phoneAlreadyExists: "Bu telefon numarası zaten kayıtlı",
+    alreadyHaveAccount: "Zaten hesabınız var mı?",
+    back: "Geri",
+
+    // Auth - Login
+    loginInfo: "Giriş Bilgileri",
+    fillAllFields: "Lütfen tüm alanları doldurun",
+    invalidCredentials: "Telefon numarası veya şifre hatalı",
+    loginSuccess: "Giriş başarılı!",
+    noAccount: "Hesabınız yok mu?",
+
+    // Settings - Family Member
+    defineFamilyMember: "Aile Üyesi Tanımla",
+    familyMemberDesc: "Anomali durumunda bilgilendirilecek aile üyesini tanımlayın",
+    familyMemberName: "Aile Üyesi Adı",
+    familyNamePlaceholder: "Ad Soyad",
+    familyMemberPhone: "Telefon Numarası",
+    anomalyNotification: "Anomali Bildirimi Gönder",
+    saveFamilyMember: "Kaydet",
+    familySaved: "Aile üyesi bilgileri kaydedildi!",
+
+    // Logout
+    logout: "Oturumu Kapat",
+    logoutSuccess: "Oturum kapatıldı",
   },
   en: {
     // Settings
@@ -218,6 +313,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Dashboard
     currentHeartRate: "Current Heart Rate",
     normalRange: "Within normal range",
+    abnormalRange: "Outside normal range!",
     dailyAverage: "Daily Average",
     target: "Target",
     weeklyTrend: "Weekly Trend",
@@ -230,10 +326,19 @@ const translations: Record<Language, Record<string, string>> = {
     fri: "Fri",
     sat: "Sat",
     sun: "Sun",
+    welcome: "Welcome",
+
+    // Heart Rate Anomaly
+    heartRateAnomaly: "Heart Rate Anomaly",
+    heartRateAnomalyDesc: "Your heart rate has gone outside normal values (60-100 bpm). Please be careful.",
+    familyNotified: "Family member notified",
+    notifiedAt: "Notification sent to:",
 
     // Info Center
     infoCenterTitle: "Info Center",
     infoCenterSubtitle: "Information about heart rhythm disorders",
+    generalInfo: "General Info",
+    generalInfoShort: "General",
     whatIsArrhythmia: "What is Heart Rhythm Disorder?",
     arrhythmiaDesc: "Heart rhythm disorder (arrhythmia) is when your heart beats too fast, too slow, or irregularly. The heart normally beats 60-100 times per minute. Beats outside this range or irregular beats are considered arrhythmia.",
     importantNote: "Important Note:",
@@ -268,11 +373,15 @@ const translations: Record<Language, Record<string, string>> = {
     setReminder: "Set Reminder",
     cardiology: "Cardiology",
 
-    // Medications
+    // Medications - Contraindicated Drugs
     medicationsTitle: "Medication Warnings",
     medicationsSubtitle: "Risky medications",
     importantWarning: "Important Warning",
     medicationWarningDesc: "The following medications may be risky for patients with heart rhythm disorders. Always consult your doctor before using any medication.",
+    contraindicatedDrugs: "Risky Drugs",
+    drugsShort: "Drugs",
+    contraindicatedDrugsTitle: "Contraindicated Medications",
+    contraindicatedDrugsDesc: "People with heart rhythm disorders should avoid or use the following drug groups with caution under medical supervision. These drugs may extend the QT interval or have adverse effects on heart rhythm.",
     high: "High",
     mediumHigh: "Medium-High",
     medium: "Medium",
@@ -294,6 +403,25 @@ const translations: Record<Language, Record<string, string>> = {
     highDoseQtExtension: "QT extension at high doses",
     cardiacSideEffects: "Cardiac side effects",
     qtIntervalEffects: "QT interval effects",
+
+    // Medication Reminders
+    medReminders: "Med Reminders",
+    remindersShort: "Reminders",
+    addMedReminder: "Add Medication Reminder",
+    medicationName: "Medication Name",
+    medNamePlaceholder: "e.g: Metoprolol",
+    medicationTime: "Medication Time",
+    remindBefore: "Remind Before (minutes)",
+    minutes: "minutes",
+    addReminder: "Add Reminder",
+    activeReminders: "Active Reminders",
+    noReminders: "No reminders added yet",
+    reminderAdded: "Reminder added!",
+    reminderRemoved: "Reminder removed",
+    minBefore: "min before",
+    medicationReminder: "Medication Reminder",
+    minutesBefore: "minutes until medication time",
+    timeToTakeMed: "Time to take medication",
 
     // Doctors
     doctorsTitle: "Cardiology Specialists",
@@ -351,9 +479,10 @@ const translations: Record<Language, Record<string, string>> = {
 
     // ECG History
     ecgHistoryTitle: "ECG History",
-    ecgHistorySubtitle: "Your electrocardiogram records",
+    ecgHistorySubtitle: "Upload your ECG records as PDF or photo",
     totalEcg: "Total ECG",
     lastQt: "Last QT",
+    lastUpload: "Last Upload",
     ecgRecord: "ECG Record",
     normal: "Normal",
     mildExtension: "Mild Extension",
@@ -364,6 +493,67 @@ const translations: Record<Language, Record<string, string>> = {
     doctor: "Doctor",
     notes: "Notes:",
     downloadEcgReport: "Download ECG Report",
+    uploadEcg: "Upload ECG Record",
+    uploadEcgDesc: "Upload your ECG records in PDF or photo format",
+    selectFile: "Select File",
+    fileUploaded: "File uploaded successfully!",
+    invalidFileType: "Invalid file type. Select a PDF or image file.",
+    fileTooLarge: "File size too large (max 10MB)",
+    recordDeleted: "Record deleted",
+    noEcgRecords: "No ECG records uploaded yet",
+    noRecords: "No records",
+    imageFile: "Photo",
+
+    // Auth - Landing
+    createAccount: "Create Account",
+    loginButton: "Login",
+    aboutApp: "About the App",
+    aboutAppDesc: "HeartTrack is a comprehensive mobile health application that helps patients with heart rhythm disorders track their health, receive medication reminders, and manage their ECG records.",
+    aboutFeature1: "Heart rate tracking",
+    aboutFeature2: "Anomaly notifications",
+    aboutFeature3: "ECG record management",
+    aboutFeature4: "Medication reminders",
+
+    // Auth - Register
+    personalInfo: "Personal Information",
+    firstName: "First Name",
+    firstNamePlaceholder: "Enter your first name",
+    lastName: "Last Name",
+    lastNamePlaceholder: "Enter your last name",
+    phoneNumber: "Phone Number",
+    password: "Password",
+    passwordPlaceholder: "Minimum 8 characters",
+    confirmPassword: "Confirm Password",
+    confirmPasswordPlaceholder: "Re-enter your password",
+    fieldRequired: "This field is required",
+    invalidPhone: "Enter a valid phone number",
+    passwordMinLength: "Password must be at least 8 characters",
+    passwordMismatch: "Passwords do not match",
+    registerSuccess: "Account created successfully!",
+    phoneAlreadyExists: "This phone number is already registered",
+    alreadyHaveAccount: "Already have an account?",
+    back: "Back",
+
+    // Auth - Login
+    loginInfo: "Login Information",
+    fillAllFields: "Please fill in all fields",
+    invalidCredentials: "Invalid phone number or password",
+    loginSuccess: "Login successful!",
+    noAccount: "Don't have an account?",
+
+    // Settings - Family Member
+    defineFamilyMember: "Define Family Member",
+    familyMemberDesc: "Define a family member to be notified in case of anomaly",
+    familyMemberName: "Family Member Name",
+    familyNamePlaceholder: "Full Name",
+    familyMemberPhone: "Phone Number",
+    anomalyNotification: "Send Anomaly Notification",
+    saveFamilyMember: "Save",
+    familySaved: "Family member info saved!",
+
+    // Logout
+    logout: "Logout",
+    logoutSuccess: "Logged out successfully",
   },
 };
 

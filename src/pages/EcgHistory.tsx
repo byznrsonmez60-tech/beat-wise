@@ -1,65 +1,87 @@
-import { FileText, Download, Calendar, Activity } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { FileText, Upload, Trash2, Image, File, Calendar, Eye } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { toast } from "sonner";
+
+interface EcgRecord {
+  id: string;
+  fileName: string;
+  fileType: string;
+  uploadDate: string;
+  fileData: string; // base64
+}
 
 const EcgHistory = () => {
   const { t, language } = useLanguage();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [records, setRecords] = useState<EcgRecord[]>([]);
 
-  const ecgRecords = [
-    {
-      id: 1,
-      date: "2024-11-15",
-      time: "15:00",
-      doctor: "Prof. Dr. Mehmet Yılmaz",
-      hospital: "Ankara Şehir Hastanesi",
-      resultKey: "normal",
-      qtInterval: "420 ms",
-      heartRate: 68,
-      notesKey: "ecgNote1",
-    },
-    {
-      id: 2,
-      date: "2024-10-20",
-      time: "10:30",
-      doctor: "Doç. Dr. Ayşe Demir",
-      hospital: "Memorial Hastanesi",
-      resultKey: "mildExtension",
-      qtInterval: "465 ms",
-      heartRate: 72,
-      notesKey: "ecgNote2",
-    },
-    {
-      id: 3,
-      date: "2024-09-10",
-      time: "14:00",
-      doctor: "Prof. Dr. Mehmet Yılmaz",
-      hospital: "Ankara Şehir Hastanesi",
-      resultKey: "normal",
-      qtInterval: "415 ms",
-      heartRate: 65,
-      notesKey: "ecgNote3",
-    },
-  ];
+  // Load records from localStorage
+  useEffect(() => {
+    const stored = localStorage.getItem("kalptakip-ecg-records");
+    if (stored) {
+      setRecords(JSON.parse(stored));
+    }
+  }, []);
 
-  const ecgNotes: Record<string, Record<string, string>> = {
-    tr: {
-      ecgNote1: "QT aralığı normal sınırlarda. Düzenli kontrol önerilir.",
-      ecgNote2: "QT hafif uzamış. İlaç ayarlaması yapıldı.",
-      ecgNote3: "EKG bulguları normal.",
-    },
-    en: {
-      ecgNote1: "QT interval within normal limits. Regular monitoring recommended.",
-      ecgNote2: "QT slightly extended. Medication adjustment made.",
-      ecgNote3: "ECG findings normal.",
-    },
+  const saveRecords = (newRecords: EcgRecord[]) => {
+    setRecords(newRecords);
+    localStorage.setItem("kalptakip-ecg-records", JSON.stringify(newRecords));
   };
 
-  const getResultColor = (resultKey: string) => {
-    if (resultKey === "normal") return "success";
-    if (resultKey === "mildExtension") return "warning";
-    return "destructive";
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    Array.from(files).forEach((file) => {
+      const validTypes = ["application/pdf", "image/jpeg", "image/png", "image/webp", "image/gif"];
+      if (!validTypes.includes(file.type)) {
+        toast.error(t("invalidFileType"));
+        return;
+      }
+
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error(t("fileTooLarge"));
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const newRecord: EcgRecord = {
+          id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+          fileName: file.name,
+          fileType: file.type.startsWith("image/") ? "image" : "pdf",
+          uploadDate: new Date().toISOString(),
+          fileData: reader.result as string,
+        };
+        saveRecords([newRecord, ...records]);
+        toast.success(t("fileUploaded"));
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Reset file input
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const deleteRecord = (id: string) => {
+    const updated = records.filter((r) => r.id !== id);
+    saveRecords(updated);
+    toast.success(t("recordDeleted"));
+  };
+
+  const viewRecord = (record: EcgRecord) => {
+    const win = window.open();
+    if (win) {
+      if (record.fileType === "image") {
+        win.document.write(`<img src="${record.fileData}" style="max-width:100%;height:auto;" />`);
+      } else {
+        win.document.write(`<iframe src="${record.fileData}" style="width:100%;height:100%;border:none;"></iframe>`);
+      }
+    }
   };
 
   const formatDate = (dateStr: string) => {
@@ -67,6 +89,8 @@ const EcgHistory = () => {
       day: "numeric",
       month: "long",
       year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -77,94 +101,110 @@ const EcgHistory = () => {
         <p className="text-muted-foreground">{t("ecgHistorySubtitle")}</p>
       </div>
 
+      {/* Upload Card */}
+      <Card className="border-dashed border-2 border-primary/30 bg-primary/5 shadow-lg">
+        <CardContent className="p-6">
+          <div className="text-center space-y-4">
+            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+              <Upload className="w-8 h-8 text-primary" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground text-lg">{t("uploadEcg")}</h3>
+              <p className="text-sm text-muted-foreground mt-1">{t("uploadEcgDesc")}</p>
+            </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".pdf,image/*"
+              multiple
+              onChange={handleFileUpload}
+              className="hidden"
+              id="ecg-file-input"
+            />
+            <Button
+              onClick={() => fileInputRef.current?.click()}
+              className="w-full h-12 text-base"
+            >
+              <Upload className="w-5 h-5 mr-2" />
+              {t("selectFile")}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Summary Card */}
       <Card className="border-none bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg">
         <CardContent className="p-6">
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-sm opacity-90 mb-1">{t("totalEcg")}</p>
-              <p className="text-3xl font-bold">{ecgRecords.length}</p>
+              <p className="text-3xl font-bold">{records.length}</p>
             </div>
             <div>
-              <p className="text-sm opacity-90 mb-1">{t("lastQt")}</p>
-              <p className="text-3xl font-bold">{ecgRecords[0].qtInterval}</p>
+              <p className="text-sm opacity-90 mb-1">{t("lastUpload")}</p>
+              <p className="text-sm font-medium">
+                {records.length > 0 ? formatDate(records[0].uploadDate) : t("noRecords")}
+              </p>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* EKG Records */}
+      {/* Records List */}
       <div className="space-y-4">
-        {ecgRecords.map((record) => (
-          <Card key={record.id} className="shadow-md hover:shadow-lg transition-all">
-            <CardHeader className="pb-3">
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex items-start gap-3 flex-1">
-                  <FileText className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                  <div className="flex-1">
-                    <CardTitle className="text-lg mb-2">
-                      {t("ecgRecord")} #{record.id}
-                    </CardTitle>
-                    <div className="flex flex-wrap gap-2">
-                      <Badge variant={getResultColor(record.resultKey)}>
-                        {t(record.resultKey)}
+        {records.length === 0 ? (
+          <Card className="shadow-md">
+            <CardContent className="p-8 text-center">
+              <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-50" />
+              <p className="text-muted-foreground">{t("noEcgRecords")}</p>
+            </CardContent>
+          </Card>
+        ) : (
+          records.map((record) => (
+            <Card key={record.id} className="shadow-md hover:shadow-lg transition-all">
+              <CardContent className="p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-start gap-3 flex-1">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      {record.fileType === "image" ? (
+                        <Image className="w-5 h-5 text-primary" />
+                      ) : (
+                        <File className="w-5 h-5 text-primary" />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-foreground text-sm truncate">{record.fileName}</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Calendar className="w-3 h-3 text-muted-foreground" />
+                        <p className="text-xs text-muted-foreground">{formatDate(record.uploadDate)}</p>
+                      </div>
+                      <Badge variant="secondary" className="mt-2 text-xs">
+                        {record.fileType === "image" ? t("imageFile") : "PDF"}
                       </Badge>
                     </div>
                   </div>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <p className="text-xs text-muted-foreground">{t("date")}</p>
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4 text-primary" />
-                    <span className="text-sm font-medium text-foreground">
-                      {formatDate(record.date)}
-                    </span>
+                  <div className="flex gap-2 flex-shrink-0">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => viewRecord(record)}
+                    >
+                      <Eye className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => deleteRecord(record.id)}
+                      className="text-destructive hover:text-destructive"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
                   </div>
                 </div>
-                <div className="space-y-1">
-                  <p className="text-xs text-muted-foreground">{t("time")}</p>
-                  <span className="text-sm font-medium text-foreground">{record.time}</span>
-                </div>
-              </div>
-
-              <div className="bg-secondary/50 rounded-lg p-3 space-y-2">
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div>
-                    <p className="text-muted-foreground text-xs mb-1">{t("qtInterval")}</p>
-                    <p className="font-semibold text-primary">{record.qtInterval}</p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground text-xs mb-1">{t("heartRate")}</p>
-                    <div className="flex items-center gap-1">
-                      <Activity className="w-3 h-3 text-accent" />
-                      <p className="font-semibold text-foreground">{record.heartRate} bpm</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <p className="text-sm font-semibold text-foreground">{t("doctor")}</p>
-                <p className="text-sm text-foreground">{record.doctor}</p>
-                <p className="text-xs text-muted-foreground">{record.hospital}</p>
-              </div>
-
-              <div className="bg-muted/50 rounded-lg p-3 border border-border">
-                <p className="text-xs font-semibold text-primary mb-1">{t("notes")}</p>
-                <p className="text-sm text-foreground">{ecgNotes[language][record.notesKey]}</p>
-              </div>
-
-              <Button variant="outline" className="w-full">
-                <Download className="w-4 h-4 mr-2" />
-                {t("downloadEcgReport")}
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          ))
+        )}
       </div>
     </div>
   );

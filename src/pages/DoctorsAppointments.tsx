@@ -120,9 +120,9 @@ const DoctorsAppointments = () => {
             <div className="flex gap-2 p-1 bg-secondary/30 rounded-lg">
                 <button
                     onClick={() => setActiveTab("doctors")}
-                    className={`flex-1 py-3 px-4 rounded-md font-medium transition-all ${activeTab === "doctors"
-                            ? "bg-primary text-primary-foreground shadow-md"
-                            : "text-muted-foreground hover:text-foreground"
+                    className={`flex-1 py-3 px-4 rounded-full font-medium transition-all ${activeTab === "doctors"
+                        ? "bg-primary text-primary-foreground shadow-md"
+                        : "text-muted-foreground hover:text-foreground"
                         }`}
                 >
                     <div className="flex items-center justify-center gap-2">
@@ -132,9 +132,9 @@ const DoctorsAppointments = () => {
                 </button>
                 <button
                     onClick={() => setActiveTab("appointments")}
-                    className={`flex-1 py-3 px-4 rounded-md font-medium transition-all ${activeTab === "appointments"
-                            ? "bg-primary text-primary-foreground shadow-md"
-                            : "text-muted-foreground hover:text-foreground"
+                    className={`flex-1 py-3 px-4 rounded-full font-medium transition-all ${activeTab === "appointments"
+                        ? "bg-primary text-primary-foreground shadow-md"
+                        : "text-muted-foreground hover:text-foreground"
                         }`}
                 >
                     <div className="flex items-center justify-center gap-2">
@@ -148,17 +148,17 @@ const DoctorsAppointments = () => {
             {activeTab === "doctors" && (
                 <div className="space-y-4">
                     {doctors.map((doctor) => (
-                        <Card key={doctor.id} className="shadow-md hover:shadow-lg transition-all border-t-4 border-t-primary">
+                        <Card key={doctor.id} className="shadow-sm hover:shadow-md transition-all border border-primary/30">
                             <CardHeader className="pb-3">
                                 <div className="flex items-start justify-between gap-3">
                                     <div className="flex items-start gap-3 flex-1">
-                                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-primary-foreground font-bold text-lg flex-shrink-0">
+                                        <div className="w-12 h-12 rounded-full bg-primary/40 flex items-center justify-center text-primary-foreground font-bold text-lg flex-shrink-0">
                                             {doctor.name.charAt(0)}
                                         </div>
                                         <div className="flex-1">
                                             <CardTitle className="text-lg mb-1">{doctor.name}</CardTitle>
                                             <div className="space-y-1">
-                                                <p className="text-sm font-medium text-primary">{doctor.specialty}</p>
+                                                <p className="text-sm font-medium text-accent-foreground">{doctor.specialty}</p>
                                                 <Badge variant="secondary" className="text-xs">
                                                     {t(doctor.subSpecialtyKey)}
                                                 </Badge>
@@ -190,7 +190,7 @@ const DoctorsAppointments = () => {
                                     <p className="text-muted-foreground text-xs">{doctor.education}</p>
                                 </div>
 
-                                <Button className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70">
+                                <Button className="w-full rounded-full bg-primary hover:bg-primary/80 text-primary-foreground">
                                     <Calendar className="w-4 h-4 mr-2" />
                                     {t("bookAppointment")}
                                 </Button>
@@ -198,7 +198,7 @@ const DoctorsAppointments = () => {
                         </Card>
                     ))}
 
-                    <Card className="border-primary/20 bg-primary/5">
+                    <Card className="border-primary/20 bg-accent">
                         <CardContent className="p-4">
                             <div className="flex items-start gap-3">
                                 <Users className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
@@ -222,7 +222,7 @@ const DoctorsAppointments = () => {
                             {t("upcomingAppointments")}
                         </h2>
                         {upcomingAppointments.map((appointment) => (
-                            <Card key={appointment.id} className="shadow-md hover:shadow-lg transition-all border-l-4 border-l-primary">
+                            <Card key={appointment.id} className="shadow-sm hover:shadow-md transition-all border border-primary/30">
                                 <CardHeader className="pb-3">
                                     <div className="flex items-start justify-between">
                                         <div>
@@ -290,7 +290,7 @@ const DoctorsAppointments = () => {
                             {t("pastAppointments")}
                         </h2>
                         {pastAppointments.map((appointment) => (
-                            <Card key={appointment.id} className="shadow-sm border-l-4 border-l-muted opacity-75">
+                            <Card key={appointment.id} className="shadow-sm border border-muted opacity-75">
                                 <CardHeader className="pb-3">
                                     <div className="flex items-start justify-between">
                                         <div>

@@ -1,22 +1,65 @@
-import { Heart, TrendingUp, Activity, Settings } from "lucide-react";
+import { Heart, TrendingUp, Activity, Settings, AlertTriangle, Bell } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const Dashboard = () => {
   const { t } = useLanguage();
+  const { user } = useAuth();
   const navigate = useNavigate();
-  const currentHeartRate = 72;
+  const [currentHeartRate, setCurrentHeartRate] = useState(72);
   const dailyAverage = 68;
   const weeklyData = [65, 70, 68, 72, 69, 71, 68];
 
   const days = [t("mon"), t("tue"), t("wed"), t("thu"), t("fri"), t("sat"), t("sun")];
 
+  const isAnomaly = currentHeartRate < 60 || currentHeartRate > 100;
+
+  // Heart rate anomaly detection
+  useEffect(() => {
+    if (isAnomaly) {
+      toast.error(
+        `⚠️ ${t("heartRateAnomaly")}: ${currentHeartRate} bpm`,
+        { duration: 8000, description: t("heartRateAnomalyDesc") }
+      );
+
+      // Check if family member notification is enabled
+      const familyMember = localStorage.getItem("kalptakip-family-member");
+      const notifyFamily = localStorage.getItem("kalptakip-notify-family") === "true";
+      if (familyMember && notifyFamily) {
+        const member = JSON.parse(familyMember);
+        toast.warning(
+          `📱 ${t("familyNotified")}: ${member.name}`,
+          { duration: 6000, description: `${t("notifiedAt")} ${member.phone}` }
+        );
+      }
+    }
+  }, [currentHeartRate]);
+
+  // Simulate heart rate changes (demo purposes)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentHeartRate(prev => {
+        const change = Math.floor(Math.random() * 5) - 2;
+        return Math.max(50, Math.min(120, prev + change));
+      });
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="space-y-6 animate-fade-in">
-      {/* Settings Button - Top Right */}
-      <div className="flex justify-end">
+      {/* Welcome + Settings */}
+      <div className="flex justify-between items-center">
+        {user && (
+          <p className="text-sm text-muted-foreground">
+            {t("welcome")}, <span className="font-semibold text-foreground">{user.firstName}</span>
+          </p>
+        )}
         <button
           onClick={() => navigate("/settings")}
           className="flex items-center gap-2 px-4 py-2 bg-card hover:bg-secondary text-foreground rounded-lg shadow-md hover:shadow-lg transition-all border border-border"
@@ -26,8 +69,25 @@ const Dashboard = () => {
           <span className="font-medium">{t("settings")}</span>
         </button>
       </div>
+
+      {/* Anomaly Alert Banner */}
+      {isAnomaly && (
+        <Card className="border-destructive/50 bg-destructive/10 shadow-lg animate-fade-in">
+          <CardContent className="p-4 flex items-center gap-3">
+            <AlertTriangle className="w-6 h-6 text-destructive flex-shrink-0" />
+            <div>
+              <p className="font-semibold text-destructive text-sm">{t("heartRateAnomaly")}</p>
+              <p className="text-xs text-muted-foreground">{t("heartRateAnomalyDesc")}</p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Hero Card - Current Heart Rate */}
-      <Card className="border-none bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg">
+      <Card className={`border-none shadow-lg ${isAnomaly
+        ? "bg-gradient-to-br from-destructive to-destructive/80 text-destructive-foreground"
+        : "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground"
+      }`}>
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div>
@@ -36,9 +96,11 @@ const Dashboard = () => {
                 <span className="text-5xl font-bold">{currentHeartRate}</span>
                 <span className="text-xl opacity-90">bpm</span>
               </div>
-              <p className="text-sm opacity-75 mt-2">{t("normalRange")}</p>
+              <p className="text-sm opacity-75 mt-2">
+                {isAnomaly ? t("abnormalRange") : t("normalRange")}
+              </p>
             </div>
-            <Heart className="w-20 h-20 opacity-20 animate-pulse-soft" fill="currentColor" />
+            <Heart className={`w-20 h-20 opacity-20 ${isAnomaly ? "animate-pulse" : "animate-pulse-soft"}`} fill="currentColor" />
           </div>
         </CardContent>
       </Card>
@@ -59,7 +121,7 @@ const Dashboard = () => {
             </div>
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">{t("target")}: 60-80 bpm</span>
+                <span className="text-muted-foreground">{t("target")}: 60-100 bpm</span>
                 <span className="text-success font-medium">%85</span>
               </div>
               <Progress value={85} className="h-2" />
