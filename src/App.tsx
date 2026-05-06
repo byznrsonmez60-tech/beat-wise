@@ -17,6 +17,8 @@ import RegisterPage from "./pages/RegisterPage";
 import Layout from "./components/Layout";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
+import { AuthProvider } from "./contexts/AuthContext";
+import { checkAndFireReminders } from "./lib/notifications";
 
 const queryClient = new QueryClient();
 
@@ -32,12 +34,17 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <LanguageProvider>
+          <AuthProvider>
           <TooltipProvider>
             <Toaster />
             <Sonner />
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Index />} />
+                <Route path="/landing" element={<LandingPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/medications" element={<Layout><MedicationReminders /></Layout>} />
                 <Route path="/info" element={<Layout><InfoCenter /></Layout>} />
                 <Route path="/doctors-appointments" element={<Layout><DoctorsAppointments /></Layout>} />
                 <Route path="/ecg" element={<Layout><EcgHistory /></Layout>} />
@@ -47,6 +54,7 @@ const App = () => {
               </Routes>
             </BrowserRouter>
           </TooltipProvider>
+          </AuthProvider>
         </LanguageProvider>
       </ThemeProvider>
     </QueryClientProvider>
