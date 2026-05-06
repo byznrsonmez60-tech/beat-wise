@@ -1,111 +1,12 @@
-import { useState, useEffect } from "react";
-import { Heart, Activity, Info, Pill, AlertTriangle, Bell, Clock, Plus, Trash2 } from "lucide-react";
+import { Heart, Activity, Info, Pill, AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { toast } from "sonner";
-
-interface MedicationReminder {
-  id: string;
-  name: string;
-  time: string;
-  reminderBefore: number; // minutes (5, 10, 15)
-}
 
 const InfoCenter = () => {
   const { t } = useLanguage();
-  const [reminders, setReminders] = useState<MedicationReminder[]>([]);
-  const [newMedName, setNewMedName] = useState("");
-  const [newMedTime, setNewMedTime] = useState("");
-  const [newReminderBefore, setNewReminderBefore] = useState("5");
-
-  // Load reminders
-  useEffect(() => {
-    const stored = localStorage.getItem("kalptakip-med-reminders");
-    if (stored) setReminders(JSON.parse(stored));
-  }, []);
-
-  // Reminder notification checker
-  useEffect(() => {
-    const checkReminders = () => {
-      const now = new Date();
-      const currentHour = now.getHours();
-      const currentMin = now.getMinutes();
-
-      reminders.forEach((reminder) => {
-        const [h, m] = reminder.time.split(":").map(Number);
-        const medTimeMin = h * 60 + m;
-        const currentTimeMin = currentHour * 60 + currentMin;
-        const diff = medTimeMin - currentTimeMin;
-
-        if (diff === reminder.reminderBefore) {
-          toast.info(
-            `💊 ${t("medicationReminder")}: ${reminder.name}`,
-            {
-              duration: 15000,
-              description: `${reminder.reminderBefore} ${t("minutesBefore")}`,
-            }
-          );
-
-          // Browser notification
-          if ("Notification" in window && Notification.permission === "granted") {
-            new Notification(`💊 ${t("medicationReminder")}`, {
-              body: `${reminder.name} - ${reminder.reminderBefore} ${t("minutesBefore")}`,
-            });
-          }
-        }
-
-        if (diff === 0) {
-          toast.warning(
-            `⏰ ${t("timeToTakeMed")}: ${reminder.name}`,
-            { duration: 20000 }
-          );
-        }
-      });
-    };
-
-    // Request notification permission
-    if ("Notification" in window && Notification.permission === "default") {
-      Notification.requestPermission();
-    }
-
-    const interval = setInterval(checkReminders, 60000);
-    return () => clearInterval(interval);
-  }, [reminders, t]);
-
-  const saveReminders = (newReminders: MedicationReminder[]) => {
-    setReminders(newReminders);
-    localStorage.setItem("kalptakip-med-reminders", JSON.stringify(newReminders));
-  };
-
-  const addReminder = () => {
-    if (!newMedName.trim() || !newMedTime) {
-      toast.error(t("fillAllFields"));
-      return;
-    }
-    const reminder: MedicationReminder = {
-      id: Date.now().toString(),
-      name: newMedName,
-      time: newMedTime,
-      reminderBefore: parseInt(newReminderBefore),
-    };
-    saveReminders([...reminders, reminder]);
-    setNewMedName("");
-    setNewMedTime("");
-    setNewReminderBefore("5");
-    toast.success(t("reminderAdded"));
-  };
-
-  const deleteReminder = (id: string) => {
-    saveReminders(reminders.filter((r) => r.id !== id));
-    toast.success(t("reminderRemoved"));
-  };
 
   const medications = [
     {
@@ -167,7 +68,7 @@ const InfoCenter = () => {
       </div>
 
       <Tabs defaultValue="general" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="general" className="flex items-center gap-1 text-xs sm:text-sm">
             <Heart className="w-4 h-4" />
             <span className="hidden sm:inline">{t("generalInfo")}</span>
@@ -177,11 +78,6 @@ const InfoCenter = () => {
             <Pill className="w-4 h-4" />
             <span className="hidden sm:inline">{t("contraindicatedDrugs")}</span>
             <span className="sm:hidden">{t("drugsShort")}</span>
-          </TabsTrigger>
-          <TabsTrigger value="reminders" className="flex items-center gap-1 text-xs sm:text-sm">
-            <Bell className="w-4 h-4" />
-            <span className="hidden sm:inline">{t("medReminders")}</span>
-            <span className="sm:hidden">{t("remindersShort")}</span>
           </TabsTrigger>
         </TabsList>
 
