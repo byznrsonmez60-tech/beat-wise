@@ -37,12 +37,13 @@ long lastBeat = 0;
 int beatAvg = 0;
 unsigned long lastNotify = 0;
 
+// NimBLE-Arduino v2.x callback signatures (include NimBLEConnInfo).
 class ServerCallbacks : public NimBLEServerCallbacks {
-  void onConnect(NimBLEServer *) override {
+  void onConnect(NimBLEServer * /*server*/, NimBLEConnInfo & /*connInfo*/) override {
     clientConnected = true;
     Serial.println("BLE client connected");
   }
-  void onDisconnect(NimBLEServer *server) override {
+  void onDisconnect(NimBLEServer * /*server*/, NimBLEConnInfo & /*connInfo*/, int /*reason*/) override {
     clientConnected = false;
     Serial.println("BLE client disconnected; restarting advertising");
     NimBLEDevice::startAdvertising();
@@ -78,9 +79,19 @@ void setup() {
       NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY);
   service->start();
 
+  // Primary advertising packet carries flags + 128-bit service UUID.
+  // Name goes into the scan response so the 31-byte adv budget isn't exceeded.
   NimBLEAdvertising *adv = NimBLEDevice::getAdvertising();
-  adv->addServiceUUID(SERVICE_UUID);
-  adv->setName("BeatWise-S3");
+
+  NimBLEAdvertisementData advData;
+  advData.setFlags(BLE_HS_ADV_F_DISC_GEN | BLE_HS_ADV_F_BREDR_UNSUP);
+  advData.setCompleteServices(NimBLEUUID(SERVICE_UUID));
+  adv->setAdvertisementData(advData);
+
+  NimBLEAdvertisementData scanResp;
+  scanResp.setName("BeatWise-S3");
+  adv->setScanResponseData(scanResp);
+
   adv->enableScanResponse(true);
   NimBLEDevice::startAdvertising();
   Serial.println("Advertising as BeatWise-S3");
