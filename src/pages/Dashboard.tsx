@@ -6,12 +6,17 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { DeviceConnect } from "@/components/DeviceConnect";
+import { useBeatWiseDevice } from "@/hooks/useBeatWiseDevice";
 
 const Dashboard = () => {
   const { t } = useLanguage();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [currentHeartRate, setCurrentHeartRate] = useState(72);
+  const device = useBeatWiseDevice();
+  const [simulatedHeartRate, setSimulatedHeartRate] = useState(72);
+  const liveAvailable = device.status === "connected" && device.fingerDetected && device.bpm > 0;
+  const currentHeartRate = liveAvailable ? device.bpm : simulatedHeartRate;
   const dailyAverage = 68;
   const weeklyData = [65, 70, 68, 72, 69, 71, 68];
 
@@ -40,16 +45,17 @@ const Dashboard = () => {
     }
   }, [currentHeartRate]);
 
-  // Simulate heart rate changes (demo purposes)
+  // Simulate heart rate changes (demo purposes — paused while a real device is streaming)
   useEffect(() => {
+    if (liveAvailable) return;
     const interval = setInterval(() => {
-      setCurrentHeartRate(prev => {
+      setSimulatedHeartRate(prev => {
         const change = Math.floor(Math.random() * 5) - 2;
         return Math.max(50, Math.min(120, prev + change));
       });
     }, 10000);
     return () => clearInterval(interval);
-  }, []);
+  }, [liveAvailable]);
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -69,6 +75,9 @@ const Dashboard = () => {
           <span className="font-medium">{t("settings")}</span>
         </button>
       </div>
+
+      {/* BLE Device */}
+      <DeviceConnect />
 
       {/* Anomaly Alert Banner */}
       {isAnomaly && (
