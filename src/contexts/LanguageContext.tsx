@@ -280,6 +280,23 @@ const translations: Record<Language, Record<string, string>> = {
     // Logout
     logout: "Oturumu Kapat",
     logoutSuccess: "Oturum kapatıldı",
+
+    // BeatWise Device
+    beatWiseDevice: "BeatWise Cihazı",
+    bluetoothNotAvailable: "Web Bluetooth bu tarayıcıda kullanılamıyor. BeatWise-S3 cihazınızı bağlamak için bu sayfayı Android'de Chrome veya Edge ile açın.",
+    statusIdle: "Bağlantı Yok",
+    statusConnecting: "Bağlanıyor…",
+    statusConnected: "Bağlandı",
+    statusDisconnected: "Bağlantı Kesildi",
+    statusError: "Hata",
+    connectDevice: "Cihazı Bağla",
+    disconnectDevice: "Bağlantıyı Kes",
+    scanning: "Taranıyor…",
+    bpmLabel: "NABIZ",
+    accelLabel: "İVME (mg)",
+    fingerLabel: "PARMAK",
+    yes: "Evet",
+    no: "Hayır",
   },
   en: {
     // Settings
