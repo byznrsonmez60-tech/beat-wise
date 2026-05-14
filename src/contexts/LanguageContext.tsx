@@ -569,6 +569,23 @@ const translations: Record<Language, Record<string, string>> = {
     // Logout
     logout: "Logout",
     logoutSuccess: "Logged out successfully",
+
+    // BeatWise Device
+    beatWiseDevice: "BeatWise Device",
+    bluetoothNotAvailable: "Web Bluetooth isn't available in this browser. Open this page in Chrome or Edge on Android to connect your BeatWise-S3 device.",
+    statusIdle: "Disconnected",
+    statusConnecting: "Connecting…",
+    statusConnected: "Connected",
+    statusDisconnected: "Disconnected",
+    statusError: "Error",
+    connectDevice: "Connect device",
+    disconnectDevice: "Disconnect",
+    scanning: "Scanning…",
+    bpmLabel: "BPM",
+    accelLabel: "Accel (mg)",
+    fingerLabel: "Finger",
+    yes: "Yes",
+    no: "No",
   },
 };
 
