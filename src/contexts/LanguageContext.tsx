@@ -280,6 +280,23 @@ const translations: Record<Language, Record<string, string>> = {
     // Logout
     logout: "Oturumu Kapat",
     logoutSuccess: "Oturum kapatıldı",
+
+    // BeatWise Device
+    beatWiseDevice: "BeatWise Cihazı",
+    bluetoothNotAvailable: "Web Bluetooth bu tarayıcıda kullanılamıyor. BeatWise-S3 cihazınızı bağlamak için bu sayfayı Android'de Chrome veya Edge ile açın.",
+    statusIdle: "Bağlantı Yok",
+    statusConnecting: "Bağlanıyor…",
+    statusConnected: "Bağlandı",
+    statusDisconnected: "Bağlantı Kesildi",
+    statusError: "Hata",
+    connectDevice: "Cihazı Bağla",
+    disconnectDevice: "Bağlantıyı Kes",
+    scanning: "Taranıyor…",
+    bpmLabel: "NABIZ",
+    accelLabel: "İVME (mg)",
+    fingerLabel: "PARMAK",
+    yes: "Evet",
+    no: "Hayır",
   },
   en: {
     // Settings
@@ -552,6 +569,23 @@ const translations: Record<Language, Record<string, string>> = {
     // Logout
     logout: "Logout",
     logoutSuccess: "Logged out successfully",
+
+    // BeatWise Device
+    beatWiseDevice: "BeatWise Device",
+    bluetoothNotAvailable: "Web Bluetooth isn't available in this browser. Open this page in Chrome or Edge on Android to connect your BeatWise-S3 device.",
+    statusIdle: "Disconnected",
+    statusConnecting: "Connecting…",
+    statusConnected: "Connected",
+    statusDisconnected: "Disconnected",
+    statusError: "Error",
+    connectDevice: "Connect device",
+    disconnectDevice: "Disconnect",
+    scanning: "Scanning…",
+    bpmLabel: "BPM",
+    accelLabel: "Accel (mg)",
+    fingerLabel: "Finger",
+    yes: "Yes",
+    no: "No",
   },
 };
 
